@@ -20,7 +20,7 @@
     <p id="recurring-text"></p>
   </div>
 
-  <!-- USER INPUTS -->
+  <!-- INPUTS -->
   <select id="residence" class="form-input">
     <option value="">Select Residence</option>
     <option value="Dagbreek">Dagbreek</option>
@@ -31,17 +31,19 @@
   <input id="name" class="form-input" placeholder="Name & Surname">
   <input id="phone" class="form-input" placeholder="Phone Number">
 
-  <!-- PAYFAST FORM -->
+  <!-- PAYFAST -->
   <form action="https://www.payfast.co.za/eng/process" method="post">
 
-    <!-- REQUIRED -->
     <input type="hidden" name="cmd" value="_paynow">
-    <input type="hidden" name="receiver" value="YOUR_MERCHANT_ID">
+    <input type="hidden" name="receiver" value="21742448">
 
-    <!-- DYNAMIC -->
+    <input type="hidden" name="item_name" value="Drop&Go Water Subscription">
+
+    <!-- Dynamic -->
     <input type="hidden" name="amount" id="payfast-amount">
     <input type="hidden" name="recurring_amount" id="payfast-recurring">
 
+    <!-- Customer Data -->
     <input type="hidden" name="name_first" id="pf-name">
     <input type="hidden" name="cell_number" id="pf-phone">
     <input type="hidden" name="custom_str1" id="pf-residence">
