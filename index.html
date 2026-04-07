@@ -1,64 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Drop&Go Water</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drop & Go Water</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<h1 class="main-title">Drop&Go Water 💧</h1>
+<h1 class="main-title">Drop & Go Water</h1>
 
-<div class="card">
+<div class="water-info">
+  <h2>Sign Up for Your Termly Subscription</h2>
+  
+  <div class="form-section">
+    <label for="residence">Residence</label>
+    <select id="residence" class="form-input">
+      <option value="">Select Residence</option>
+      <option value="Dagbreek">Dagbreek</option>
+      <option value="Irene">Irene</option>
+    </select>
 
-  <h2>Quarterly Subscription</h2>
+    <label for="sectionRoom">Section & Room Number</label>
+    <input type="text" id="sectionRoom" class="form-input">
 
-  <!-- PRICE DISPLAY -->
-  <div id="price-box">
-    <p id="price-text">Fill in your details to see your price</p>
-    <p id="recurring-text"></p>
+    <label for="fullName">Full Name</label>
+    <input type="text" id="fullName" class="form-input">
+
+    <label for="phoneNumber">Phone Number</label>
+    <input type="text" id="phoneNumber" class="form-input">
+
+    <div id="paymentDisplay">
+      <p><strong>Initial Payment:</strong> <span id="firstPayment">-</span></p>
+      <p><strong>Recurring Payment:</strong> <span id="recurringPayment">-</span></p>
+      <p>Fill in your details to see exact payment amounts.</p>
+    </div>
+
+    <button id="subscribeBtn" class="btn-whatsapp">Subscribe with PayFast</button>
   </div>
-
-  <!-- INPUTS -->
-  <select id="residence" class="form-input">
-    <option value="">Select Residence</option>
-    <option value="Dagbreek">Dagbreek</option>
-    <option value="Irene">Irene</option>
-  </select>
-
-  <input id="room" class="form-input" placeholder="Section & Room Number">
-  <input id="name" class="form-input" placeholder="Name & Surname">
-  <input id="phone" class="form-input" placeholder="Phone Number">
-
-  <!-- PAYFAST -->
-  <form action="https://www.payfast.co.za/eng/process" method="post">
-
-    <input type="hidden" name="cmd" value="_paynow">
-    <input type="hidden" name="receiver" value="21742448">
-
-    <input type="hidden" name="item_name" value="Drop&Go Water Subscription">
-
-    <!-- Dynamic -->
-    <input type="hidden" name="amount" id="payfast-amount">
-    <input type="hidden" name="recurring_amount" id="payfast-recurring">
-
-    <!-- Customer Data -->
-    <input type="hidden" name="name_first" id="pf-name">
-    <input type="hidden" name="cell_number" id="pf-phone">
-    <input type="hidden" name="custom_str1" id="pf-residence">
-    <input type="hidden" name="custom_str2" id="pf-room">
-
-    <!-- BUTTON -->
-    <input type="image"
-      src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png"
-      class="payfast-btn">
-
-  </form>
-
 </div>
 
+<script src="config.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
