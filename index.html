@@ -1,25 +1,50 @@
-<div class="card highlight">
-  <h3>Quarterly Subscription</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drop & Go Water</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-  <!-- Payment Display -->
+<h1 class="main-title">Drop & Go Water</h1>
+
+<div class="water-info">
+  <h2>Quarterly Subscription 🔁</h2>
+
+  <!-- PAYMENT DISPLAY -->
   <div class="payment-display">
-    <p id="first-payment">First Payment: - / term</p>
-    <p id="recurring-payment">Recurring Payment: - / term</p>
+    <p id="first-payment">Fill in your details to see your price</p>
+    <p id="recurring-payment"></p>
   </div>
 
-  <!-- Form -->
-  <select id="residence" class="form-input">
-    <option value="">Select Residence</option>
-    <option value="dagbreek">Dagbreek</option>
-    <option value="irene">Irene</option>
-  </select>
+  <div class="container">
+    <div class="card highlight">
 
-  <input type="text" id="section-room" class="form-input" placeholder="Section & Room Number">
-  <input type="text" id="name-surname" class="form-input" placeholder="Name & Surname">
-  <input type="text" id="phone" class="form-input" placeholder="Phone Number">
+      <!-- FORM -->
+      <form id="payment-form">
 
-  <!-- Modern PayFast Button -->
-  <button id="subscribe-btn" class="btn-payfast">
-    Subscribe with PayFast
-  </button>
+        <select id="residence" class="form-input" required>
+          <option value="">Select Residence</option>
+          <option value="dagbreek">Dagbreek</option>
+          <option value="irene">Irene</option>
+        </select>
+
+        <input type="text" id="section-room" class="form-input" placeholder="Section & Room Number" required>
+        <input type="text" id="name" class="form-input" placeholder="Name & Surname" required>
+        <input type="text" id="phone" class="form-input" placeholder="Phone Number" required>
+
+        <button type="submit" class="btn-payfast">
+          Subscribe with PayFast
+        </button>
+
+      </form>
+
+    </div>
+  </div>
 </div>
+
+<script src="script.js"></script>
+</body>
+</html>
