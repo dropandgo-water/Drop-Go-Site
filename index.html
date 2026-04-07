@@ -1,56 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drop&Go Water Subscription</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1 class="main-title">Drop&Go Water</h1>
+<div class="card highlight">
+  <h3>Quarterly Subscription</h3>
 
-  <div class="water-info">
-    <h2>Quarterly Subscription 🔁</h2>
-
-    <div class="payment-display">
-      <p id="first-payment-text">Fill in your details to see your initial payment.</p>
-      <p id="recurring-payment-text">Recurring payment per term will be displayed here.</p>
-    </div>
-
-    <div class="container">
-      <div class="card highlight">
-        <form id="subscription-form" action="https://www.payfast.co.za/eng/process" method="post">
-          <input type="hidden" name="cmd" value="_paynow">
-          <input type="hidden" name="receiver" value="21742448">
-          <input type="hidden" name="amount" id="payfast-amount" value="0">
-          <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
-          <input type="hidden" name="subscription_type" value="1">
-          <input type="hidden" name="recurring_amount" id="payfast-recurring" value="0">
-          <input type="hidden" name="frequency" value="4">
-          <input type="hidden" name="cycles" value="0">
-
-          <!-- Residence -->
-          <select class="form-input" name="custom_str1" id="residence" required>
-            <option value="">Select your residence</option>
-            <option value="Dagbreek">Dagbreek</option>
-            <option value="Irene">Irene</option>
-          </select>
-
-          <!-- Section & Room -->
-          <input class="form-input" type="text" name="custom_str2" id="section-room" placeholder="Section & Room Number" required>
-
-          <!-- Name & Surname -->
-          <input class="form-input" type="text" name="name_first" id="name" placeholder="Name & Surname" required>
-
-          <!-- Phone -->
-          <input class="form-input" type="tel" name="cell_number" id="phone" placeholder="Phone Number" required>
-
-          <input class="btn-whatsapp" type="submit" value="Subscribe with PayFast">
-        </form>
-      </div>
-    </div>
+  <!-- Payment Display -->
+  <div class="payment-display">
+    <p id="first-payment">First Payment: - / term</p>
+    <p id="recurring-payment">Recurring Payment: - / term</p>
   </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+  <!-- Form -->
+  <select id="residence" class="form-input">
+    <option value="">Select Residence</option>
+    <option value="dagbreek">Dagbreek</option>
+    <option value="irene">Irene</option>
+  </select>
+
+  <input type="text" id="section-room" class="form-input" placeholder="Section & Room Number">
+  <input type="text" id="name-surname" class="form-input" placeholder="Name & Surname">
+  <input type="text" id="phone" class="form-input" placeholder="Phone Number">
+
+  <!-- Modern PayFast Button -->
+  <button id="subscribe-btn" class="btn-payfast">
+    Subscribe with PayFast
+  </button>
+</div>
