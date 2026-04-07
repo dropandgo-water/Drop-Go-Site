@@ -1,33 +1,69 @@
-<!-- Subscription Card — Quarterly only -->
-<div class="card">
-  <h2>Quarterly subscription 🔁</h2>
-  
-  <!-- Residence selection -->
-  <label for="residence">Select your residence:</label>
-  <select id="residence" name="residence" required>
-    <option value="">--Choose--</option>
-    <option value="dagbreek">Dagbreek</option>
-    <option value="irene">Irene</option>
-  </select>
-  
-  <!-- Dynamic price display -->
-  <p id="display-price">Price: R50 – R550</p>
-  
-  <form id="subscription-form" action="https://www.payfast.co.za/eng/process" method="post">
-    <input type="hidden" name="cmd" value="_paynow">
-    <input type="hidden" name="receiver" value="21742448">
-    <input type="hidden" name="amount" value="0" id="pf-amount">
-    <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
-    <input type="hidden" name="subscription_type" value="1">
-    <input type="hidden" name="recurring_amount" value="0" id="pf-recurring">
-    <input type="hidden" name="frequency" value="4">
-    <input type="hidden" name="cycles" value="0">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drop&Go Water Subscription</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <input class="form-input" type="text" name="name_first" placeholder="Name_Surname" required>
-    <input class="form-input" type="text" name="custom_str1" placeholder="Residence_Section_RoomNr" required>
-    <input class="form-input" type="tel" name="cell_number" placeholder="Phone Number" required>
+  <h1 class="main-title">Drop&amp;Go Water 💧</h1>
 
-    <input class="form-input" type="image" src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png" alt="Subscribe Quarterly with PayFast">
-  </form>
-  <p class="secure-payment">Secure payment via PayFast</p>
-</div>
+  <div class="water-info">
+    <h2>Knock Knock. It's your water!</h2>
+    <ul>
+      <li><strong>Pick your plan:</strong> Choose a term or quarterly subscription and sign up in seconds.</li>
+      <li><strong>The Monday drop:</strong> Receive your 20L tank weekly while your subscription is active.</li>
+      <li><strong>Pay for what you use:</strong> Missed weeks are automatically credited on your next subscription.</li>
+    </ul>
+  </div>
+
+  <div class="container">
+
+    <!-- Quarterly Subscription -->
+    <div class="card">
+      <h2>Quarterly subscription 🔁</h2>
+      <div class="price">R390 / term</div>
+      <p>Fill in your details to see your exact first payment.</p>
+
+      <form id="subscription-form" action="https://www.payfast.co.za/eng/process" method="post">
+        <input type="hidden" name="cmd" value="_paynow">
+        <input type="hidden" name="receiver" value="21742448">
+        <input type="hidden" name="amount" id="pf-amount" value="390">
+        <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
+        <input type="hidden" name="subscription_type" value="1">
+        <input type="hidden" name="recurring_amount" id="pf-recurring" value="390">
+        <input type="hidden" name="frequency" value="4">
+        <input type="hidden" name="cycles" value="0">
+
+        <input class="form-input" type="text" name="name_first" placeholder="Name_Surname" required>
+        <input class="form-input" type="text" name="custom_str1" placeholder="Residence_Section_RoomNr" required>
+        <input class="form-input" type="tel" name="cell_number" placeholder="Phone Number" required>
+
+        <!-- Residence Dropdown -->
+        <select class="form-input" id="residence-select" required>
+          <option value="">Select Residence</option>
+          <option value="dagbreek">Dagbreek</option>
+          <option value="irene">Irene</option>
+        </select>
+
+        <!-- Display first payment -->
+        <p id="first-payment">First payment: R---</p>
+
+        <input type="image" src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png" alt="Subscribe Quarterly with PayFast">
+      </form>
+
+      <p class="secure-payment">Secure payment via PayFast</p>
+    </div>
+
+  </div>
+
+  <a class="btn-whatsapp" href="https://wa.me/825233426?text=Hi%20I%20need%20help%20with%20Drop%26Go%20subscriptions" target="_blank">
+    Chat with us on WhatsApp
+  </a>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
