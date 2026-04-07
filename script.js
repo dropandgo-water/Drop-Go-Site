@@ -1,31 +1,50 @@
-// BASE PRICES
+// Base prices
 const basePrices = {
-  dagbreek: 390,
-  irene: 550
+  Dagbreek: 390,
+  Irene: 550
 };
 
-// DELIVERY DATES (EDIT THESE WHEN NEEDED)
+// Delivery dates
 const deliveries = {
-  dagbreek: [
-    "2026-04-11","2026-04-18","2026-04-25","2026-05-02","2026-05-09","2026-05-16","2026-05-23","2026-05-30","2026-06-06"
+  Dagbreek: [
+    "2026-04-11","2026-04-18","2026-04-25","2026-05-02",
+    "2026-05-09","2026-05-16","2026-05-23","2026-05-30","2026-06-06"
   ],
-  irene: [
-    "2026-04-11","2026-04-18","2026-04-25","2026-05-02","2026-05-09","2026-05-16","2026-05-23","2026-05-30"
+  Irene: [
+    "2026-04-11","2026-04-18","2026-04-25","2026-05-02",
+    "2026-05-09","2026-05-16","2026-05-23","2026-05-30"
   ]
 };
 
-// ELEMENTS
+// Elements
 const residence = document.getElementById("residence");
-const firstPayment = document.getElementById("first-payment");
-const recurringPayment = document.getElementById("recurring-payment");
+const priceText = document.getElementById("price-text");
+const recurringText = document.getElementById("recurring-text");
 
-// UPDATE FUNCTION
-function updatePrice() {
+const nameInput = document.getElementById("name");
+const phoneInput = document.getElementById("phone");
+const roomInput = document.getElementById("room");
+
+// PayFast fields
+const pfAmount = document.getElementById("payfast-amount");
+const pfRecurring = document.getElementById("payfast-recurring");
+const pfName = document.getElementById("pf-name");
+const pfPhone = document.getElementById("pf-phone");
+const pfResidence = document.getElementById("pf-residence");
+const pfRoom = document.getElementById("pf-room");
+
+function updateEverything() {
   const res = residence.value;
 
+  // Always update customer info
+  pfName.value = nameInput.value;
+  pfPhone.value = phoneInput.value;
+  pfResidence.value = res;
+  pfRoom.value = roomInput.value;
+
   if (!res) {
-    firstPayment.innerHTML = "Fill in your details to see your price";
-    recurringPayment.innerHTML = "";
+    priceText.innerHTML = "Fill in your details to see your price";
+    recurringText.innerHTML = "";
     return;
   }
 
@@ -37,33 +56,28 @@ function updatePrice() {
 
   const base = basePrices[res];
 
-  // 🔥 CORRECT LOGIC
+  // ✅ CORRECT pricing
   const priceNow = (base * (remaining / total)).toFixed(2);
   const discount = Math.round((1 - (remaining / total)) * 100);
 
-  // DISPLAY
-  firstPayment.innerHTML = `
-    <span class="big-price">R${priceNow}</span> / term
-    <br>
-    <span class="sub-price">
-      <span class="strike">R${base}</span>
+  // UI
+  priceText.innerHTML = `
+    R${priceNow} / term <br>
+    <span style="font-size:14px;">
+      <span style="text-decoration:line-through;">R${base}</span>
       (${discount}% discount)
     </span>
   `;
 
-  recurringPayment.innerHTML = `
-    Recurring: <strong>R${base}</strong> / term
-  `;
+  recurringText.innerHTML = `Recurring: R${base} / term`;
+
+  // Send to PayFast
+  pfAmount.value = priceNow;
+  pfRecurring.value = base;
 }
 
-// LIVE UPDATE
-residence.addEventListener("change", updatePrice);
-document.getElementById("section-room").addEventListener("input", updatePrice);
-document.getElementById("name").addEventListener("input", updatePrice);
-document.getElementById("phone").addEventListener("input", updatePrice);
-
-// SUBMIT (PLACEHOLDER FOR PAYFAST INTEGRATION)
-document.getElementById("payment-form").addEventListener("submit", function(e) {
-  e.preventDefault();
-  alert("Ready to connect PayFast here.");
-});
+// EVENTS (this fixes your "nothing updates" issue)
+residence.addEventListener("change", updateEverything);
+nameInput.addEventListener("input", updateEverything);
+phoneInput.addEventListener("input", updateEverything);
+roomInput.addEventListener("input", updateEverything);
