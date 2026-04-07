@@ -1,63 +1,72 @@
-// script.js
-
-// Helper to parse YYYY-MM-DD string to Date
-function parseDate(str) {
-  const [y, m, d] = str.split('-').map(Number);
-  return new Date(y, m - 1, d);
-}
-
-// Calculate first payment for a residence
-function getFirstPayment(residence) {
-  const today = new Date();
-  const config = deliveryConfig[residence];
-  const deliveries = config.deliveries.map(parseDate);
-
-  // Remaining deliveries
-  const remainingDeliveries = deliveries.filter(d => today <= d);
-  const totalDeliveries = remainingDeliveries.length;
-
-  if(totalDeliveries === 0) return config.basePrice; // after term → full price
-
-  let price = config.basePrice * (totalDeliveries / deliveries.length);
-
-  // Apply early discount if set
-  if(config.earlyDiscount > 0 && remainingDeliveries.length === deliveries.length){
-    price = price * (1 - config.earlyDiscount);
-  }
-
-  return price.toFixed(2);
-}
-
-// Calculate recurring payment date (3 days before next term start)
-function getNextRecurringDate() {
-  const today = new Date();
-  for(const term of termConfig){
-    const termStart = parseDate(term.start);
-    if(today <= termStart){
-      const recurringDate = new Date(termStart);
-      recurringDate.setDate(recurringDate.getDate() - 3);
-      return recurringDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+// Configuration
+const config = {
+  residences: {
+    dagbreek: { 
+      baseline: 390, 
+      deliveries: [
+        "2026-04-07",
+        "2026-04-11",
+        "2026-04-18",
+        "2026-04-25",
+        "2026-05-02",
+        "2026-05-09",
+        "2026-05-16",
+        "2026-05-23",
+        "2026-05-30"
+      ]
+    },
+    irene: { 
+      baseline: 550, 
+      deliveries: [
+        "2026-04-11",
+        "2026-04-18",
+        "2026-04-25",
+        "2026-05-02",
+        "2026-05-09",
+        "2026-05-16",
+        "2026-05-23",
+        "2026-05-30"
+      ],
+      discountDates: ["2026-04-11", "2026-04-18"],
+      discountPercent: 30
     }
   }
-  return null;
-}
+};
 
-// Update forms
-document.querySelectorAll('.card form').forEach(form => {
-  const residenceSelect = form.querySelector('select[name="residence"]');
-  let residence = residenceSelect.value;
+const residenceSelect = document.getElementById('residence');
+const priceDisplay = document.getElementById('display-price');
+const pfAmount = document.getElementById('pf-amount');
+const pfRecurring = document.getElementById('pf-recurring');
 
-  // Initial first payment
-  form.querySelector('input[name="amount"]').value = getFirstPayment(residence);
-  form.querySelector('input[name="recurring_amount"]').value = deliveryConfig[residence].basePrice;
+residenceSelect.addEventListener('change', () => {
+  const selected = residenceSelect.value;
+  if (!selected) {
+    priceDisplay.textContent = "Price: R50 – R550";
+    pfAmount.value = 0;
+    pfRecurring.value = 0;
+    return;
+  }
 
-  // Update payment if residence changes
-  residenceSelect.addEventListener('change', () => {
-    residence = residenceSelect.value;
-    form.querySelector('input[name="amount"]').value = getFirstPayment(residence);
-    form.querySelector('input[name="recurring_amount"]').value = deliveryConfig[residence].basePrice;
-  });
+  const today = new Date();
+  const res = config.residences[selected];
+
+  // Remaining deliveries for current term
+  const remainingDeliveries = res.deliveries.filter(d => new Date(d) >= today).length;
+  const totalDeliveries = res.deliveries.length;
+
+  // Calculate discount if applicable (for Irene)
+  let price = res.baseline;
+  if (selected === 'irene') {
+    const discountActive = res.discountDates.some(d => new Date(d) > today);
+    price = price * (discountActive ? (1 - res.discountPercent / 100) : 1);
+  }
+
+  // First payment: proportional to remaining deliveries
+  const firstPayment = remainingDeliveries > 0 ? (price * remainingDeliveries / totalDeliveries) : price;
+
+  priceDisplay.textContent = `First payment: R${firstPayment.toFixed(2)}`;
+  
+  // Update hidden PayFast inputs
+  pfAmount.value = firstPayment.toFixed(2);
+  pfRecurring.value = res.baseline; // recurring amount is always baseline
 });
-
-// Log next recurring payment date
-console.log("Next recurring payment date:", getNextRecurringDate());
