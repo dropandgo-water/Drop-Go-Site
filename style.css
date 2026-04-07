@@ -1,5 +1,5 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: #f4f6f8;
   margin: 0;
   padding: 30px 15px;
@@ -7,89 +7,45 @@ body {
 }
 
 .main-title {
-  font-size: 38px;
-  color: #0077cc;
-  margin-bottom: 15px;
-}
-
-.water-info {
-  max-width: 700px;
-  margin: 20px auto;
-  background: linear-gradient(135deg, #e0f7fa, #ffffff);
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-
-.water-info h2 {
-  text-align: center;
-  color: #00aaff;
-}
-
-/* PAYMENT DISPLAY */
-.payment-display {
-  text-align: center;
-  margin: 25px 0;
-}
-
-.big-price {
   font-size: 36px;
-  font-weight: bold;
   color: #0077cc;
-}
-
-.sub-price {
-  font-size: 14px;
-  color: #777;
-}
-
-.strike {
-  text-decoration: line-through;
-  margin-right: 5px;
-}
-
-/* CARD */
-.container {
-  display: flex;
-  justify-content: center;
 }
 
 .card {
   background: white;
-  max-width: 350px;
+  max-width: 400px;
+  margin: 30px auto;
   padding: 25px;
-  border-radius: 14px;
+  border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-.highlight {
-  border: 2px solid #00aaff;
+#price-box {
+  margin-bottom: 20px;
 }
 
-/* INPUTS */
+#price-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0077cc;
+}
+
+#recurring-text {
+  color: #555;
+  font-size: 16px;
+}
+
 .form-input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
 }
 
-/* BUTTON */
-.btn-payfast {
+.payfast-btn {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #ff6600, #ff9900);
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
+  max-width: 260px;
+  margin-top: 15px;
   cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-payfast:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(255,153,0,0.4);
 }
