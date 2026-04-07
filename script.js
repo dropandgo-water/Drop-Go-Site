@@ -1,83 +1,62 @@
-// Base prices
-const basePrices = {
-  Dagbreek: 390,
-  Irene: 550
-};
+// script.js
 
-// Delivery dates
-const deliveries = {
-  Dagbreek: [
-    "2026-04-11","2026-04-18","2026-04-25","2026-05-02",
-    "2026-05-09","2026-05-16","2026-05-23","2026-05-30","2026-06-06"
-  ],
-  Irene: [
-    "2026-04-11","2026-04-18","2026-04-25","2026-05-02",
-    "2026-05-09","2026-05-16","2026-05-23","2026-05-30"
-  ]
-};
+const residenceSelect = document.getElementById('residence');
+const sectionRoomInput = document.getElementById('sectionRoom');
+const fullNameInput = document.getElementById('fullName');
+const phoneInput = document.getElementById('phoneNumber');
+const firstPaymentEl = document.getElementById('firstPayment');
+const recurringPaymentEl = document.getElementById('recurringPayment');
+const subscribeBtn = document.getElementById('subscribeBtn');
 
-// Elements
-const residence = document.getElementById("residence");
-const priceText = document.getElementById("price-text");
-const recurringText = document.getElementById("recurring-text");
+residenceSelect.addEventListener('change', updatePayments);
+sectionRoomInput.addEventListener('input', updatePayments);
+fullNameInput.addEventListener('input', updatePayments);
+phoneInput.addEventListener('input', updatePayments);
 
-const nameInput = document.getElementById("name");
-const phoneInput = document.getElementById("phone");
-const roomInput = document.getElementById("room");
-
-// PayFast fields
-const pfAmount = document.getElementById("payfast-amount");
-const pfRecurring = document.getElementById("payfast-recurring");
-const pfName = document.getElementById("pf-name");
-const pfPhone = document.getElementById("pf-phone");
-const pfResidence = document.getElementById("pf-residence");
-const pfRoom = document.getElementById("pf-room");
-
-function updateEverything() {
-  const res = residence.value;
-
-  // Always update customer info
-  pfName.value = nameInput.value;
-  pfPhone.value = phoneInput.value;
-  pfResidence.value = res;
-  pfRoom.value = roomInput.value;
-
-  if (!res) {
-    priceText.innerHTML = "Fill in your details to see your price";
-    recurringText.innerHTML = "";
+function updatePayments() {
+  const residence = residenceSelect.value;
+  if (!residence || !residences[residence]) {
+    firstPaymentEl.textContent = '-';
+    recurringPaymentEl.textContent = '-';
     return;
   }
 
   const today = new Date();
-  const dates = deliveries[res].map(d => new Date(d));
+  const resData = residences[residence];
+  const totalDeliveries = resData.deliveries.length;
 
-  const total = dates.length;
-  const remaining = dates.filter(d => d >= today).length;
+  // Find remaining deliveries
+  let remaining = resData.deliveries.filter(d => new Date(d) >= today).length;
+  if (remaining === 0) remaining = totalDeliveries; // in case term already passed
 
-  const base = basePrices[res];
+  // Base calculation
+  let firstPayment = (resData.baseline * remaining) / totalDeliveries;
+  let discountText = '';
 
-  // ✅ CORRECT pricing
-  const priceNow = (base * (remaining / total)).toFixed(2);
-  const discount = Math.round((1 - (remaining / total)) * 100);
+  // Apply discount if applicable
+  if (resData.discountDates) {
+    for (const disc of resData.discountDates) {
+      if (new Date(disc.date) >= today) {
+        firstPayment = firstPayment * (1 - disc.discount);
+        discountText = ` (was ${resData.baseline}, discount ${disc.discount * 100}%)`;
+        break;
+      }
+    }
+  }
 
-  // UI
-  priceText.innerHTML = `
-    R${priceNow} / term <br>
-    <span style="font-size:14px;">
-      <span style="text-decoration:line-through;">R${base}</span>
-      (${discount}% discount)
-    </span>
-  `;
-
-  recurringText.innerHTML = `Recurring: R${base} / term`;
-
-  // Send to PayFast
-  pfAmount.value = priceNow;
-  pfRecurring.value = base;
+  firstPaymentEl.innerHTML = `${firstPayment.toFixed(2)}${discountText} / term`;
+  recurringPaymentEl.textContent = `${resData.baseline.toFixed(2)} / term`;
 }
 
-// EVENTS (this fixes your "nothing updates" issue)
-residence.addEventListener("change", updateEverything);
-nameInput.addEventListener("input", updateEverything);
-phoneInput.addEventListener("input", updateEverything);
-roomInput.addEventListener("input", updateEverything);
+// PayFast integration
+subscribeBtn.addEventListener('click', () => {
+  const residence = residenceSelect.value;
+  if (!residence) { alert('Please select a residence.'); return; }
+
+  const firstPayment = parseFloat(firstPaymentEl.textContent) || residences[residence].baseline;
+
+  // Build PayFast URL
+  const payfastUrl = `https://www.payfast.co.za/eng/process?merchant_id=${payfastConfig.merchant_id}&amount=${firstPayment.toFixed(2)}&item_name=Water+Subscription&return_url=${encodeURIComponent(payfastConfig.return_url)}&cancel_url=${encodeURIComponent(payfastConfig.cancel_url)}`;
+
+  window.open(payfastUrl, "_blank");
+});
