@@ -1,68 +1,69 @@
-// Residence pricing & term deliveries
-const pricingConfig = {
-  "Dagbreek": { base: 390, deliveries: 9 },
-  "Irene": {
-    base: 550,
-    deliveries: 8,
-    discountDates: ["2026-04-11","2026-04-18"],
-    discountPercent: 30
-  }
+// BASE PRICES
+const basePrices = {
+  dagbreek: 390,
+  irene: 550
 };
 
-// Elements
-const residenceInput = document.getElementById("residence");
-const sectionRoomInput = document.getElementById("section-room");
-const nameInput = document.getElementById("name");
-const phoneInput = document.getElementById("phone");
-const firstPaymentText = document.getElementById("first-payment-text");
-const recurringPaymentText = document.getElementById("recurring-payment-text");
-const payfastAmount = document.getElementById("payfast-amount");
-const payfastRecurring = document.getElementById("payfast-recurring");
+// DELIVERY DATES (EDIT THESE WHEN NEEDED)
+const deliveries = {
+  dagbreek: [
+    "2026-04-11","2026-04-18","2026-04-25","2026-05-02","2026-05-09","2026-05-16","2026-05-23","2026-05-30","2026-06-06"
+  ],
+  irene: [
+    "2026-04-11","2026-04-18","2026-04-25","2026-05-02","2026-05-09","2026-05-16","2026-05-23","2026-05-30"
+  ]
+};
 
-function calculatePayments() {
-  const residence = residenceInput.value;
-  if (!residence || !pricingConfig[residence]) {
-    firstPaymentText.innerHTML = "Fill in your details to see your initial payment.";
-    recurringPaymentText.innerHTML = "Recurring payment per term will be displayed here.";
-    payfastAmount.value = 0;
-    payfastRecurring.value = 0;
+// ELEMENTS
+const residence = document.getElementById("residence");
+const firstPayment = document.getElementById("first-payment");
+const recurringPayment = document.getElementById("recurring-payment");
+
+// UPDATE FUNCTION
+function updatePrice() {
+  const res = residence.value;
+
+  if (!res) {
+    firstPayment.innerHTML = "Fill in your details to see your price";
+    recurringPayment.innerHTML = "";
     return;
   }
 
   const today = new Date();
-  const config = pricingConfig[residence];
+  const dates = deliveries[res].map(d => new Date(d));
 
-  let basePrice = config.base;
-  let remainingDeliveries = config.deliveries;
+  const total = dates.length;
+  const remaining = dates.filter(d => d >= today).length;
 
-  // Example: calculate initial payment depending on passed deliveries
-  // Here we assume user signs up now, subtract one delivery for simplicity
-  const initialPayment = Math.round((basePrice - basePrice / remainingDeliveries) * 100) / 100;
+  const base = basePrices[res];
 
-  // Discount logic for Irene (or any other)
-  let discountDisplay = "";
-  if (config.discountDates) {
-    for (let date of config.discountDates) {
-      const d = new Date(date);
-      if (today < d) {
-        const discounted = Math.round(initialPayment * (1 - config.discountPercent/100) * 100)/100;
-        discountDisplay = ` <span style="text-decoration:line-through;color:#999;">R${initialPayment}</span> (-${config.discountPercent}%)`;
-        payfastAmount.value = discounted;
-        firstPaymentText.innerHTML = `Initial payment: <strong>R${discounted}</strong>${discountDisplay}`;
-        break;
-      }
-    }
-  } else {
-    payfastAmount.value = initialPayment;
-    firstPaymentText.innerHTML = `Initial payment: <strong>R${initialPayment}</strong>`;
-  }
+  // 🔥 CORRECT LOGIC
+  const priceNow = (base * (remaining / total)).toFixed(2);
+  const discount = Math.round((1 - (remaining / total)) * 100);
 
-  // Recurring payment
-  recurringPaymentText.innerHTML = `Recurring payment per term: <strong>R${basePrice}</strong>`;
-  payfastRecurring.value = basePrice;
+  // DISPLAY
+  firstPayment.innerHTML = `
+    <span class="big-price">R${priceNow}</span> / term
+    <br>
+    <span class="sub-price">
+      <span class="strike">R${base}</span>
+      (${discount}% discount)
+    </span>
+  `;
+
+  recurringPayment.innerHTML = `
+    Recurring: <strong>R${base}</strong> / term
+  `;
 }
 
-// Trigger calculation live
-[residenceInput, sectionRoomInput, nameInput, phoneInput].forEach(el => {
-  el.addEventListener("input", calculatePayments);
+// LIVE UPDATE
+residence.addEventListener("change", updatePrice);
+document.getElementById("section-room").addEventListener("input", updatePrice);
+document.getElementById("name").addEventListener("input", updatePrice);
+document.getElementById("phone").addEventListener("input", updatePrice);
+
+// SUBMIT (PLACEHOLDER FOR PAYFAST INTEGRATION)
+document.getElementById("payment-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  alert("Ready to connect PayFast here.");
 });
