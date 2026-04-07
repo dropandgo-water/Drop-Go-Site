@@ -15,8 +15,8 @@
   <div class="water-info">
     <h2>Knock Knock. It's your water!</h2>
     <ul>
-      <li><strong>Pick your plan:</strong> Choose a term or annual subscription and sign up in seconds.</li>
-      <li><strong>The Monday drop:</strong> Receive your first 20L tank this Monday — we swap it weekly while your subscription is active.</li>
+      <li><strong>Pick your plan:</strong> Choose a term subscription and sign up in seconds.</li>
+      <li><strong>The Saturday drop:</strong> Receive your 20L tank — we swap it weekly while your subscription is active.</li>
       <li><strong>Pay for what you use:</strong> Missed weeks are automatically credited on your next subscription.</li>
     </ul>
   </div>
@@ -27,47 +27,29 @@
     <!-- Quarterly -->
     <div class="card">
       <h2>Quarterly subscription 🔁</h2>
-      <div class="price">R390 / term</div>
-      <p>R390 billed once per term</p>
+      <div class="price">R390 - R550 / term</div>
+      <p>Price depends on residence and remaining deliveries</p>
       <form action="https://www.payfast.co.za/eng/process" method="post">
         <input type="hidden" name="cmd" value="_paynow">
         <input type="hidden" name="receiver" value="21742448">
-        <input type="hidden" name="amount" value="390">
+        <input type="hidden" name="amount" value=""> <!-- dynamically filled by JS -->
         <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
         <input type="hidden" name="subscription_type" value="1">
-        <input type="hidden" name="recurring_amount" value="390">
-        <input type="hidden" name="frequency" value="4">
+        <input type="hidden" name="recurring_amount" value=""> <!-- dynamically filled -->
+        <input type="hidden" name="frequency" value="4"> <!-- quarterly -->
         <input type="hidden" name="cycles" value="0">
 
         <input class="form-input" type="text" name="name_first" placeholder="Name_Surname" required>
         <input class="form-input" type="text" name="custom_str1" placeholder="Residence_Section_RoomNr" required>
         <input class="form-input" type="tel" name="cell_number" placeholder="Phone Number" required>
+
+        <!-- Residence dropdown -->
+        <select name="residence" class="form-input" required>
+          <option value="Dagbrek">Dagbrek</option>
+          <option value="Irene">Irene</option>
+        </select>
 
         <input type="image" src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png" alt="Subscribe Quarterly with PayFast">
-      </form>
-      <p class="secure-payment">Secure payment via PayFast</p>
-    </div>
-
-    <!-- Annual -->
-    <div class="card highlight">
-      <h2>Annual subscription ⭐</h2>
-      <div class="price">R1280 / year</div>
-      <p>R320/term · Save 18%</p>
-      <form action="https://www.payfast.co.za/eng/process" method="post">
-        <input type="hidden" name="cmd" value="_paynow">
-        <input type="hidden" name="receiver" value="21742448">
-        <input type="hidden" name="amount" value="1280">
-        <input type="hidden" name="item_name" value="Drop&Go Annual Subscription">
-        <input type="hidden" name="subscription_type" value="1">
-        <input type="hidden" name="recurring_amount" value="1280">
-        <input type="hidden" name="frequency" value="6">
-        <input type="hidden" name="cycles" value="0">
-
-        <input class="form-input" type="text" name="name_first" placeholder="Name_Surname" required>
-        <input class="form-input" type="text" name="custom_str1" placeholder="Residence_Section_RoomNr" required>
-        <input class="form-input" type="tel" name="cell_number" placeholder="Phone Number" required>
-
-        <input type="image" src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png" alt="Subscribe Annually with PayFast">
       </form>
       <p class="secure-payment">Secure payment via PayFast</p>
     </div>
@@ -79,6 +61,7 @@
     Chat with us on WhatsApp
   </a>
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
