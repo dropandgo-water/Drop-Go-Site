@@ -1,72 +1,41 @@
-// Configuration
-const config = {
-  residences: {
-    dagbreek: { 
-      baseline: 390, 
-      deliveries: [
-        "2026-04-07",
-        "2026-04-11",
-        "2026-04-18",
-        "2026-04-25",
-        "2026-05-02",
-        "2026-05-09",
-        "2026-05-16",
-        "2026-05-23",
-        "2026-05-30"
-      ]
-    },
-    irene: { 
-      baseline: 550, 
-      deliveries: [
-        "2026-04-11",
-        "2026-04-18",
-        "2026-04-25",
-        "2026-05-02",
-        "2026-05-09",
-        "2026-05-16",
-        "2026-05-23",
-        "2026-05-30"
-      ],
-      discountDates: ["2026-04-11", "2026-04-18"],
-      discountPercent: 30
+document.addEventListener("DOMContentLoaded", () => {
+  const residenceSelect = document.getElementById("residence-select");
+  const firstPaymentDisplay = document.getElementById("first-payment");
+  const pfAmount = document.getElementById("pf-amount");
+  const pfRecurring = document.getElementById("pf-recurring");
+
+  function calculateFirstPayment() {
+    const residenceKey = residenceSelect.value;
+    if (!residenceKey) {
+      firstPaymentDisplay.textContent = "First payment: R---";
+      return;
     }
-  }
-};
 
-const residenceSelect = document.getElementById('residence');
-const priceDisplay = document.getElementById('display-price');
-const pfAmount = document.getElementById('pf-amount');
-const pfRecurring = document.getElementById('pf-recurring');
+    const today = new Date();
+    const residence = RESIDENCES[residenceKey];
+    const deliveries = residence.deliveries.map(d => new Date(d));
+    let remainingDeliveries = deliveries.filter(d => d >= today).length;
 
-residenceSelect.addEventListener('change', () => {
-  const selected = residenceSelect.value;
-  if (!selected) {
-    priceDisplay.textContent = "Price: R50 – R550";
-    pfAmount.value = 0;
-    pfRecurring.value = 0;
-    return;
-  }
+    if (remainingDeliveries === 0) {
+      remainingDeliveries = deliveries.length; // next term
+    }
 
-  const today = new Date();
-  const res = config.residences[selected];
+    let firstPayment = residence.baseline * (remainingDeliveries / deliveries.length);
 
-  // Remaining deliveries for current term
-  const remainingDeliveries = res.deliveries.filter(d => new Date(d) >= today).length;
-  const totalDeliveries = res.deliveries.length;
+    // Apply early discount for Irene first 2 deliveries
+    if (residence.earlyDiscount && residenceKey === "irene") {
+      if (today < deliveries[1]) { // before 2nd delivery
+        firstPayment = firstPayment * (1 - residence.earlyDiscount);
+      }
+    }
 
-  // Calculate discount if applicable (for Irene)
-  let price = res.baseline;
-  if (selected === 'irene') {
-    const discountActive = res.discountDates.some(d => new Date(d) > today);
-    price = price * (discountActive ? (1 - res.discountPercent / 100) : 1);
+    // Round to nearest rand
+    firstPayment = Math.round(firstPayment);
+
+    firstPaymentDisplay.textContent = `First payment: R${firstPayment}`;
+    pfAmount.value = firstPayment;
+    pfRecurring.value = residence.baseline; // recurring amount always baseline
   }
 
-  // First payment: proportional to remaining deliveries
-  const firstPayment = remainingDeliveries > 0 ? (price * remainingDeliveries / totalDeliveries) : price;
-
-  priceDisplay.textContent = `First payment: R${firstPayment.toFixed(2)}`;
-  
-  // Update hidden PayFast inputs
-  pfAmount.value = firstPayment.toFixed(2);
-  pfRecurring.value = res.baseline; // recurring amount is always baseline
+  residenceSelect.addEventListener("change", calculateFirstPayment);
 });
