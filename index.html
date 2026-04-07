@@ -1,69 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Drop&Go Water Subscription</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drop&Go Water Subscription</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <h1 class="main-title">Drop&amp;Go Water 💧</h1>
+  <h1 class="main-title">Drop&Go Water</h1>
 
   <div class="water-info">
-    <h2>Knock Knock. It's your water!</h2>
-    <ul>
-      <li><strong>Pick your plan:</strong> Choose a term or quarterly subscription and sign up in seconds.</li>
-      <li><strong>The Monday drop:</strong> Receive your 20L tank weekly while your subscription is active.</li>
-      <li><strong>Pay for what you use:</strong> Missed weeks are automatically credited on your next subscription.</li>
-    </ul>
-  </div>
+    <h2>Quarterly Subscription 🔁</h2>
 
-  <div class="container">
-
-    <!-- Quarterly Subscription -->
-    <div class="card">
-      <h2>Quarterly subscription 🔁</h2>
-      <div class="price">R390 / term</div>
-      <p>Fill in your details to see your exact first payment.</p>
-
-      <form id="subscription-form" action="https://www.payfast.co.za/eng/process" method="post">
-        <input type="hidden" name="cmd" value="_paynow">
-        <input type="hidden" name="receiver" value="21742448">
-        <input type="hidden" name="amount" id="pf-amount" value="390">
-        <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
-        <input type="hidden" name="subscription_type" value="1">
-        <input type="hidden" name="recurring_amount" id="pf-recurring" value="390">
-        <input type="hidden" name="frequency" value="4">
-        <input type="hidden" name="cycles" value="0">
-
-        <input class="form-input" type="text" name="name_first" placeholder="Name_Surname" required>
-        <input class="form-input" type="text" name="custom_str1" placeholder="Residence_Section_RoomNr" required>
-        <input class="form-input" type="tel" name="cell_number" placeholder="Phone Number" required>
-
-        <!-- Residence Dropdown -->
-        <select class="form-input" id="residence-select" required>
-          <option value="">Select Residence</option>
-          <option value="dagbreek">Dagbreek</option>
-          <option value="irene">Irene</option>
-        </select>
-
-        <!-- Display first payment -->
-        <p id="first-payment">First payment: R---</p>
-
-        <input type="image" src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png" alt="Subscribe Quarterly with PayFast">
-      </form>
-
-      <p class="secure-payment">Secure payment via PayFast</p>
+    <div class="price-info">
+      <p id="first-payment-text">Fill in your details to see your first payment and discount.</p>
+      <p id="recurring-payment-text">Recurring payment per term will be calculated automatically.</p>
     </div>
 
+    <div class="container">
+      <div class="card highlight">
+        <form id="subscription-form" action="https://www.payfast.co.za/eng/process" method="post">
+          <input type="hidden" name="cmd" value="_paynow">
+          <input type="hidden" name="receiver" value="21742448">
+          <input type="hidden" name="amount" id="payfast-amount" value="0">
+          <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
+          <input type="hidden" name="subscription_type" value="1">
+          <input type="hidden" name="recurring_amount" id="payfast-recurring" value="0">
+          <input type="hidden" name="frequency" value="4">
+          <input type="hidden" name="cycles" value="0">
+
+          <!-- Residence -->
+          <select class="form-input" name="custom_str1" id="residence" required>
+            <option value="">Select your residence</option>
+            <option value="Dagbreek">Dagbreek</option>
+            <option value="Irene">Irene</option>
+          </select>
+
+          <!-- Section & Room -->
+          <input class="form-input" type="text" name="custom_str2" id="section-room" placeholder="Section & Room Number" required>
+
+          <!-- Name & Surname -->
+          <input class="form-input" type="text" name="name_first" id="name" placeholder="Name & Surname" required>
+
+          <!-- Phone -->
+          <input class="form-input" type="tel" name="cell_number" id="phone" placeholder="Phone Number" required>
+
+          <input class="btn-whatsapp" type="submit" value="Subscribe with PayFast">
+        </form>
+      </div>
+    </div>
   </div>
 
-  <a class="btn-whatsapp" href="https://wa.me/825233426?text=Hi%20I%20need%20help%20with%20Drop%26Go%20subscriptions" target="_blank">
-    Chat with us on WhatsApp
-  </a>
-
-  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
