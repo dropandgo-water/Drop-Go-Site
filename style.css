@@ -1,54 +1,25 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f4f6f8;
   margin: 0;
   padding: 30px 15px;
   text-align: center;
 }
 
-.main-title {
-  font-size: 36px;
-  color: #0077cc;
-  margin-bottom: 10px;
+.main-title { font-size: 38px; color: #0077cc; margin-bottom: 15px; letter-spacing: 1px; }
+
+.water-info {
+  max-width: 700px; margin: 20px auto;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  padding: 25px; border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  text-align: left;
 }
 
-.card {
-  background: white;
-  max-width: 420px;
-  margin: 30px auto;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-#price-box {
-  margin-bottom: 20px;
-}
-
-#price-text {
-  font-size: 30px;
-  font-weight: bold;
-  color: #0077cc;
-}
-
-#recurring-text {
-  color: #555;
-  font-size: 16px;
-  margin-top: 5px;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.payfast-btn {
-  width: 100%;
-  max-width: 260px;
-  margin-top: 15px;
-  cursor: pointer;
-}
+.water-info h2 { text-align:center; font-size:28px; color:#00aaff; margin-bottom:15px; line-height:1.2; }
+.water-info label { display:block; margin:10px 0 5px; font-weight:bold; color:#0077cc; }
+.form-input { width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ccc; font-size:14px; }
+#paymentDisplay { margin-top:20px; text-align:center; font-size:18px; color:#0077cc; }
+#paymentDisplay strong { font-size:20px; }
+.btn-whatsapp { display:inline-block; margin-top:20px; padding:15px 30px; background:#25D366; color:white; border-radius:8px; text-decoration:none; font-weight:bold; font-size:18px; border:none; cursor:pointer; }
+.btn-whatsapp:hover { opacity:0.85; }
