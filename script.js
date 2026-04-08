@@ -46,8 +46,8 @@ function updatePricing() {
   const recurringPayment = data.baseline;
 
   priceDisplay.textContent = firstPayment.toFixed(2);
-  paymentInfo.innerHTML = `<strong>Initial payment:</strong> R${firstPayment.toFixed(2)}<br>
-                           <strong>Recurring payment:</strong> R${recurringPayment.toFixed(2)}${discountText} / term`;
+  paymentInfo.innerHTML = `<strong>Initial payment:</strong> R${firstPayment.toFixed(2)}${discountText}<br>
+                           <strong>Recurring payment:</strong> R${recurringPayment.toFixed(2)} / term`;
 
   amountField.value = firstPayment.toFixed(2);
   recurringField.value = recurringPayment.toFixed(2);
