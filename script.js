@@ -34,7 +34,7 @@ function updatePricing() {
       if (new Date(d.date) >= today) {
         discount = d.discount;
         const endDate = new Date(d.date);
-        discountText = ` (30% Off till ${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'short' })} 🔥)`;
+        discountText = ` (30% off first term if you sign up by ${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'short' })} 🔥)`;
       }
     });
   }
