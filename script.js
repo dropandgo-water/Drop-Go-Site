@@ -16,6 +16,8 @@ function updatePricing() {
   if (!residence || !residences[residence]) {
     priceDisplay.textContent = "—";
     paymentInfo.textContent = "Fill in your details to see your payment";
+    amountField.value = "";
+    recurringField.value = "";
     return;
   }
 
@@ -25,18 +27,27 @@ function updatePricing() {
   const remaining = deliveryDates.filter(d => d >= today).length;
 
   let discount = 0;
+  let discountText = "";
+
   if (residence === "Irene" && data.discountDates) {
     data.discountDates.forEach(d => {
-      if (new Date(d.date) >= today) discount = d.discount;
+      if (new Date(d.date) >= today) {
+        discount = d.discount;
+        const endDate = new Date(d.date);
+        discountText = ` (30% Off till ${endDate.getDate()} ${endDate.toLocaleString('default', { month: 'short' })})`;
+      }
     });
   }
 
+  // First payment uses discount if applicable
   const firstPayment = (data.baseline * remaining / deliveryDates.length) * (1 - discount);
-  const recurringPayment = data.baseline * (1 - discount);
+
+  // Recurring payment always baseline
+  const recurringPayment = data.baseline;
 
   priceDisplay.textContent = firstPayment.toFixed(2);
   paymentInfo.innerHTML = `<strong>Initial payment:</strong> R${firstPayment.toFixed(2)}<br>
-                           <strong>Recurring payment:</strong> R${recurringPayment.toFixed(2)} / term`;
+                           <strong>Recurring payment:</strong> R${recurringPayment.toFixed(2)}${discountText} / term`;
 
   amountField.value = firstPayment.toFixed(2);
   recurringField.value = recurringPayment.toFixed(2);
