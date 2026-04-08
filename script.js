@@ -53,3 +53,16 @@ function updatePricing() {
   recurringField.value = recurringPayment.toFixed(2);
   itemNameField.value = `${residence} Subscription`;
 }
+const payfastForm = document.getElementById('payfastForm');
+
+payfastForm.addEventListener('submit', function() {
+    // Get the current selected residence
+    const residence = residenceSelect.value;
+
+    // Get the section/room input value
+    const sectionRoom = payfastForm.querySelector('input[name="section_room"]').value;
+
+    // Populate PayFast custom fields
+    document.getElementById('custom_str1').value = residence;      // Custom String 1 = Residence
+    document.getElementById('custom_str2').value = sectionRoom;    // Custom String 2 = Section_Room
+});
