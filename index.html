@@ -8,73 +8,51 @@
 </head>
 <body>
 
-  <!-- Main Title -->
-  <h1 class="main-title">Drop&amp;Go Water 💧</h1>
+<h1 class="main-title">Drop&amp;Go Water 💧</h1>
 
-  <!-- Water Info Section -->
-  <div class="water-info">
-    <h2>Knock Knock. It's your water!</h2>
-    <ul>
-      <li>1. <strong>Pick your plan:</strong> Choose your residence and fill in your details to get the exact payment.</li>
-      <li>2. <strong>Weekly delivery:</strong> 20L water delivered per week for your term.</li>
-      <li>3. <strong>Pay as needed:</strong> Payments adjust automatically based on remaining deliveries.</li>
-    </ul>
+<div class="water-info">
+  <h2>Knock Knock. It's your water!</h2>
+  <ul>
+    <li>1. <strong>Pick your plan:</strong> Choose your residence and fill in your details.</li>
+    <li>2. <strong>Weekly delivery:</strong> Receive your 20L tank every week.</li>
+    <li>3. <strong>Pay for what you use:</strong> Only pay for remaining deliveries; discounts applied automatically.</li>
+  </ul>
+</div>
+
+<div class="container">
+  <div class="card highlight">
+    <h2>Quarterly subscription 🔁</h2>
+    <div class="price">R<span id="priceDisplay">—</span> / term</div>
+    <p id="paymentInfo">Fill in your details to see your payment</p>
+
+    <form id="payfastForm" action="https://www.payfast.co.za/eng/process" method="post">
+      <input type="hidden" name="cmd" value="_paynow">
+      <input type="hidden" name="receiver" value="">
+      <input type="hidden" name="amount" id="amount" value="">
+      <input type="hidden" name="item_name" id="item_name" value="Drop&Go Quarterly Subscription">
+      <input type="hidden" name="subscription_type" value="1">
+      <input type="hidden" name="recurring_amount" id="recurring_amount" value="">
+      <input type="hidden" name="frequency" value="4">
+      <input type="hidden" name="cycles" value="0">
+
+      <select id="residence" class="form-input" required>
+        <option value="">Select Residence</option>
+        <option value="Dagbreek">Dagbreek</option>
+        <option value="Irene">Irene</option>
+      </select>
+
+      <input class="form-input" type="text" name="section_room" placeholder="Section_Room (e.g. 6_7)" required>
+      <input class="form-input" type="text" name="name_first" placeholder="Name_Surname (e.g. Hugo_Radley)" required>
+      <input class="form-input" type="tel" name="cell_number" placeholder="Phone number (e.g. 0825233426)" required>
+
+      <button type="submit" class="btn-payfast">Subscribe with PayFast</button>
+    </form>
+
+    <p style="font-size:12px;">Secure payment via PayFast</p>
   </div>
+</div>
 
-  <!-- Subscription Card -->
-  <div class="container">
-    <div class="card">
-      <h2>Quarterly subscription 🔁</h2>
-      
-      <div class="price" id="priceDisplay">Fill in your details to see the payment</div>
-      <p id="firstPaymentDisplay"></p>
-      <p id="recurringPaymentDisplay"></p>
-
-      <form action="https://www.payfast.co.za/eng/process" method="post" id="subscriptionForm">
-        <!-- PayFast Required Fields -->
-        <input type="hidden" name="merchant_id" value="21742448">
-        <input type="hidden" name="merchant_key" value="y2edamceu4zmv">
-        <input type="hidden" name="return_url" value="https://yourgithubusername.github.io/dropandgo/">
-        <input type="hidden" name="cancel_url" value="https://yourgithubusername.github.io/dropandgo/">
-        <input type="hidden" name="notify_url" value="https://yourserver.com/payfast-ipn">
-
-        <!-- Dynamic Amounts -->
-        <input type="hidden" name="amount" id="amount" value="">
-        <input type="hidden" name="item_name" value="Drop&Go Quarterly Subscription">
-        <input type="hidden" name="subscription_type" value="1">
-        <input type="hidden" name="recurring_amount" id="recurring_amount" value="">
-        <input type="hidden" name="frequency" value="4">
-        <input type="hidden" name="cycles" value="0">
-
-        <!-- User Input -->
-        <select class="form-input" name="residence" id="residence" required>
-          <option value="">Choose residence</option>
-          <option value="Dagbreek">Dagbreek</option>
-          <option value="Irene">Irene</option>
-        </select>
-
-        <input class="form-input" type="text" name="section_room" placeholder="Section_RoomNr (e.g. 6_7)" required>
-        <input class="form-input" type="text" name="name_first" placeholder="Name_Surname" required>
-        <input class="form-input" type="tel" name="cell_number" placeholder="Phone number" required>
-
-        <!-- PayFast Button -->
-        <input type="image"
-               src="https://my.payfast.io/images/buttons/Subscribe/Primary-Large-Subscribe.png"
-               alt="Subscribe with PayFast">
-      </form>
-
-      <p style="font-size:12px;">Secure payment via PayFast</p>
-    </div>
-  </div>
-
-  <!-- WhatsApp support -->
-  <a class="btn-whatsapp"
-     href="https://wa.me/825233426?text=Hi%20I%20need%20help%20with%20Drop%26Go%20subscriptions"
-     target="_blank">
-    Chat with us on WhatsApp
-  </a>
-
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+<script src="config.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
