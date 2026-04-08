@@ -1,5 +1,6 @@
 // config.js
 
+
 const residences = {
   "Dagbreek": {
     baseline: 390,
