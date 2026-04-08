@@ -1,62 +1,44 @@
-// script.js
+const residenceSelect = document.getElementById("residence");
+const priceDisplay = document.getElementById("priceDisplay");
+const paymentInfo = document.getElementById("paymentInfo");
 
-const residenceSelect = document.getElementById('residence');
-const sectionRoomInput = document.getElementById('sectionRoom');
-const fullNameInput = document.getElementById('fullName');
-const phoneInput = document.getElementById('phoneNumber');
-const firstPaymentEl = document.getElementById('firstPayment');
-const recurringPaymentEl = document.getElementById('recurringPayment');
-const subscribeBtn = document.getElementById('subscribeBtn');
+const amountField = document.getElementById("amount");
+const recurringField = document.getElementById("recurring_amount");
+const itemNameField = document.getElementById("item_name");
+const receiverField = document.querySelector('input[name="receiver"]');
 
-residenceSelect.addEventListener('change', updatePayments);
-sectionRoomInput.addEventListener('input', updatePayments);
-fullNameInput.addEventListener('input', updatePayments);
-phoneInput.addEventListener('input', updatePayments);
+receiverField.value = payfastConfig.merchant_id;
 
-function updatePayments() {
+residenceSelect.addEventListener("change", updatePricing);
+
+function updatePricing() {
   const residence = residenceSelect.value;
   if (!residence || !residences[residence]) {
-    firstPaymentEl.textContent = '-';
-    recurringPaymentEl.textContent = '-';
+    priceDisplay.textContent = "—";
+    paymentInfo.textContent = "Fill in your details to see your payment";
     return;
   }
 
   const today = new Date();
-  const resData = residences[residence];
-  const totalDeliveries = resData.deliveries.length;
+  const data = residences[residence];
+  const deliveryDates = data.deliveries.map(d => new Date(d));
+  const remaining = deliveryDates.filter(d => d >= today).length;
 
-  // Find remaining deliveries
-  let remaining = resData.deliveries.filter(d => new Date(d) >= today).length;
-  if (remaining === 0) remaining = totalDeliveries; // in case term already passed
-
-  // Base calculation
-  let firstPayment = (resData.baseline * remaining) / totalDeliveries;
-  let discountText = '';
-
-  // Apply discount if applicable
-  if (resData.discountDates) {
-    for (const disc of resData.discountDates) {
-      if (new Date(disc.date) >= today) {
-        firstPayment = firstPayment * (1 - disc.discount);
-        discountText = ` (was ${resData.baseline}, discount ${disc.discount * 100}%)`;
-        break;
-      }
-    }
+  let discount = 0;
+  if (residence === "Irene" && data.discountDates) {
+    data.discountDates.forEach(d => {
+      if (new Date(d.date) >= today) discount = d.discount;
+    });
   }
 
-  firstPaymentEl.innerHTML = `${firstPayment.toFixed(2)}${discountText} / term`;
-  recurringPaymentEl.textContent = `${resData.baseline.toFixed(2)} / term`;
+  const firstPayment = (data.baseline * remaining / deliveryDates.length) * (1 - discount);
+  const recurringPayment = data.baseline * (1 - discount);
+
+  priceDisplay.textContent = firstPayment.toFixed(2);
+  paymentInfo.innerHTML = `<strong>Initial payment:</strong> R${firstPayment.toFixed(2)}<br>
+                           <strong>Recurring payment:</strong> R${recurringPayment.toFixed(2)} / term`;
+
+  amountField.value = firstPayment.toFixed(2);
+  recurringField.value = recurringPayment.toFixed(2);
+  itemNameField.value = `${residence} Subscription`;
 }
-
-// PayFast integration
-subscribeBtn.addEventListener('click', () => {
-  const residence = residenceSelect.value;
-  if (!residence) { alert('Please select a residence.'); return; }
-
-  const firstPayment = parseFloat(firstPaymentEl.textContent) || residences[residence].baseline;
-
-  // Build PayFast URL
-  const payfastUrl = `https://www.payfast.co.za/eng/process?merchant_id=${payfastConfig.merchant_id}&amount=${firstPayment.toFixed(2)}&item_name=Water+Subscription&return_url=${encodeURIComponent(payfastConfig.return_url)}&cancel_url=${encodeURIComponent(payfastConfig.cancel_url)}`;
-
-  window.open(payfastUrl, "_blank");
-});
