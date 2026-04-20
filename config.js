@@ -26,7 +26,7 @@ const residences = {
     ],
     discountDates: [
       { date: "2026-04-11", discount: 0.30 },
-      { date: "2026-04-18", discount: 0.30 }
+      { date: "2026-04-22", discount: 0.30 }
     ]
   }
 };
